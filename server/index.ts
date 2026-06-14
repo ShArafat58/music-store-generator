@@ -35,10 +35,17 @@ app.get('/api/songs', (req, res) => {
 });
 
 // Serve static frontend in production
-const clientBuildPath = path.join(__dirname, '../../client/dist');
+const isCompiled = __dirname.endsWith('dist') || __dirname.endsWith('dist\\');
+const clientBuildPath = isCompiled 
+  ? path.join(__dirname, '../../client/dist')
+  : path.join(__dirname, '../client/dist');
+
 app.use(express.static(clientBuildPath));
 
-app.use((req, res) => {
+app.use((req, res, next) => {
+  if (req.path.startsWith('/api') || req.path.match(/\.(js|css|png|jpg|jpeg|gif|ico|svg)$/)) {
+    return next();
+  }
   res.sendFile(path.join(clientBuildPath, 'index.html'));
 });
 

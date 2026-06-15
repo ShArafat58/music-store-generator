@@ -1,7 +1,16 @@
+export interface MusicNote {
+  note: string;
+  duration: string;
+  time: number;
+}
+
 export interface MusicComposition {
   tempo: number;
   scale: string;
-  notes: { note: string; duration: string; time: number }[];
+  melody: MusicNote[];
+  bass: MusicNote[];
+  chords: MusicNote[];
+  drums: { type: 'kick' | 'snare' | 'hat'; time: number }[];
 }
 
 export interface SongRecord {
